@@ -1,5 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Book } from "../types/index";
+
+import Card from "./card";
 
 const getBooks = async ({ pageParam = 0 }) => {
   const res = await fetch(`http://localhost:8000/?page=${pageParam}&limit=10`);
@@ -36,15 +39,7 @@ function CardList() {
       hasMore={hasNextPage}
       loader={<p>...</p>}
     >
-      {books &&
-        books?.map((book: any) => (
-          <div
-            style={{ border: "1px solid black", margin: 14, padding: 15 }}
-            key={book.id}
-          >
-            {book.title}
-          </div>
-        ))}
+      {books && books?.map((book: Book) => <Card {...book} />)}
     </InfiniteScroll>
   );
 }

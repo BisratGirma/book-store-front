@@ -1,39 +1,56 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import styled from "styled-components";
+import { Book } from "../types";
 
-export function CardBook() {
+const StyledCard = styled.div`
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Mobile styles */
+  @media (max-width: 600px) {
+    padding: 12px;
+    h3 {
+      font-size: 18px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+
+  /* Tablet styles */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    padding: 20px;
+    h3 {
+      font-size: 24px;
+    }
+    p {
+      font-size: 16px;
+    }
+  }
+
+  /* Larger screens */
+  @media (min-width: 1025px) {
+    /* Add any additional styling for larger screens */
+  }
+`;
+
+const Card = ({ writer, point, title, coverImage, tag }: Book) => {
   return (
-    <Card className="mt-6 w-96" placeholder={""}>
-      <CardHeader color="blue-gray" className="relative h-56" placeholder={""}>
-        <img
-          src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
-          alt="card-image"
-        />
-      </CardHeader>
-      <CardBody placeholder={""}>
-        <Typography
-          variant="h5"
-          color="blue-gray"
-          className="mb-2"
-          placeholder={""}
-        >
-          UI/UX Review Check
-        </Typography>
-        <Typography placeholder={""}>
-          The place is close to Barceloneta Beach and bus stop just 2 min by
-          walk and near to &quot;Naviglio&quot; where you can enjoy the main
-          night life in Barcelona.
-        </Typography>
-      </CardBody>
-      <CardFooter className="pt-0" placeholder={""}>
-        <Button placeholder={""}>Read More</Button>
-      </CardFooter>
-    </Card>
+    <StyledCard>
+      <img
+        src={
+          coverImage ??
+          "https://images-na.ssl-images-amazon.com/images/I/51Ga5GuElyL._AC_SX184_.jpg"
+        }
+        alt={title}
+      />
+      <h3>{title}</h3>
+      <p>{"$" + point}</p>
+      <p>{writer}</p>
+    </StyledCard>
   );
-}
+};
+
+export default Card;
