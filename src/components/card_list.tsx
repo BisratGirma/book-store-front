@@ -3,6 +3,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Book } from "../types/index";
 
 import Card from "./card";
+import styled from "styled-components";
+import LoadingSpinner from "./loading";
 
 const getBooks = async ({ pageParam = 0 }) => {
   const res = await fetch(`http://localhost:8000/?page=${pageParam}&limit=10`);
@@ -12,6 +14,12 @@ const getBooks = async ({ pageParam = 0 }) => {
 
   return { ...data, prevPage: pageParam };
 };
+
+const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+`;
 
 function CardList() {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
@@ -37,9 +45,14 @@ function CardList() {
       dataLength={books?.Length ?? 0}
       next={() => fetchNextPage()}
       hasMore={hasNextPage}
-      loader={<p>...</p>}
+      loader={LoadingSpinner()}
     >
-      {books && books?.map((book: Book) => <Card {...book} />)}
+      <CardGrid>
+        {books &&
+          books.map((book: Book) => (
+            <div key={book.id}>{<Card {...book} />}</div>
+          ))}
+      </CardGrid>
     </InfiniteScroll>
   );
 }

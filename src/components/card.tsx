@@ -47,7 +47,7 @@ const Card = ({ writer, point, title, coverImage, tag }: Book) => {
         alt={title}
       />
       <h3>{title}</h3>
-      <p>{"$" + point}</p>
+      <p style={{ color: "#B12704" }}>{point ? "$" + point : "not setted"}</p>
       <p>{writer}</p>
     </StyledCard>
   );
