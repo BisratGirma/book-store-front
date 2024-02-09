@@ -6,6 +6,10 @@ import Card from "./card";
 import styled from "styled-components";
 import LoadingSpinner from "./loading";
 
+// 3.75.158.163
+// 3.125.183.140
+// 35.157.117.28
+// const [];
 const getBooks = async ({
   pageParam = 0,
   queryKey,
@@ -13,10 +17,12 @@ const getBooks = async ({
   pageParam: number;
   queryKey: string[];
 }) => {
-  const res = await fetch(`http://localhost:8000/?page=${pageParam}&limit=10`);
-  const data = await res.json();
+  let url = `https://bookstore-backend-d3x5.onrender.com/api/books/paginate/?page=${pageParam}&limit=10`;
 
-  console.log("data: ", pageParam);
+  if (queryKey[1].length) url += `&search=${queryKey[1]}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
 
   return { ...data, prevPage: pageParam };
 };
@@ -30,20 +36,28 @@ const CardGrid = styled.div`
 function CardList({ search }: { search: string }) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     initialPageParam: 1,
-    queryKey: ["books"],
+    queryKey: ["books", search],
     queryFn: getBooks,
     getNextPageParam: (lastPage) => {
+      console.log(
+        "this true: ",
+        lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount
+      );
       if (lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount)
         return false;
 
-      console.log("true");
-
+      console.log("this page: ", lastPage.prevPage + 1);
       return lastPage.prevPage + 1;
     },
   });
 
+  console.log("has more: ", hasNextPage);
+
   const books = data?.pages.reduce((acc, page) => {
-    return [...acc, ...page.documents];
+    if (page?.documents?.length > 1) return [...acc, ...page.documents];
+    else if (Array.isArray(page?.documents) && page?.documents?.length === 1)
+      return page.documents;
+    else return [];
   }, []);
 
   return (
@@ -52,6 +66,7 @@ function CardList({ search }: { search: string }) {
       next={() => fetchNextPage()}
       hasMore={hasNextPage}
       loader={LoadingSpinner()}
+      endMessage={<p>Nothing more to show</p>}
     >
       <CardGrid>
         {books &&

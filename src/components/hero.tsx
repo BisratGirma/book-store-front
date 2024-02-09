@@ -51,7 +51,9 @@ const HeroSection = ({
   const handleSearchSubmit = (e: any) => {
     e.preventDefault();
     // Handle search logic here
-    setSeachKey(e.target.elements.search.value);
+
+    console.log("value: ", e.currentTarget.elements[0].value);
+    setSeachKey(e.currentTarget.elements[0].value);
   };
 
   return (

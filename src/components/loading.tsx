@@ -15,6 +15,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 15px;
+  margin-top: 20px;
 `;
 
 const Spinner = styled.div`
