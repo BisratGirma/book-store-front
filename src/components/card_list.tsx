@@ -6,7 +6,13 @@ import Card from "./card";
 import styled from "styled-components";
 import LoadingSpinner from "./loading";
 
-const getBooks = async ({ pageParam = 0 }) => {
+const getBooks = async ({
+  pageParam = 0,
+  queryKey,
+}: {
+  pageParam: number;
+  queryKey: string[];
+}) => {
   const res = await fetch(`http://localhost:8000/?page=${pageParam}&limit=10`);
   const data = await res.json();
 
@@ -21,7 +27,7 @@ const CardGrid = styled.div`
   gap: 16px;
 `;
 
-function CardList() {
+function CardList({ search }: { search: string }) {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     initialPageParam: 1,
     queryKey: ["books"],
