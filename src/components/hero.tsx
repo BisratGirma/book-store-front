@@ -83,13 +83,15 @@ const HeroSection = () => {
   const setSearch = useStore((state: any) => state.setSearch);
   const setMinPrice = useStore((state: any) => state.setMinPrice);
   const setMaxPrice = useStore((state: any) => state.setMaxPrice);
-  const searchValues = useStore((state: any) => state);
+  const searchValues = useStore((state: any) => state.search);
 
   const handleSearchSubmit = (e: any) => {
     e.preventDefault();
 
     setSearch(e.currentTarget.elements[0].value);
   };
+
+  console.log("searchValues: ", searchValues);
 
   return (
     <HeroContainer>
@@ -99,7 +101,6 @@ const HeroSection = () => {
           <SearchInput
             type="text"
             placeholder="Search for books..."
-            value={searchValues.search.search}
             onChange={(e: any) => setSearch(e.target.value)}
           />
         </div>
@@ -109,14 +110,14 @@ const HeroSection = () => {
           <PriceField
             type="number"
             min="0"
-            value={searchValues.search.minPrice}
+            value={searchValues.minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
           />
           <Label>-</Label>
           <PriceField
             type="number"
             min="0"
-            value={searchValues.search.maxPrice}
+            value={searchValues.maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
           />
         </PriceInput>

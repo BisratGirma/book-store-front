@@ -11,7 +11,7 @@ const getBooks = async ({
   pageParam = 0,
   queryKey,
 }: {
-  pageParam: number;
+  pageParam: number | false;
   queryKey: string[];
 }) => {
   let url = `https://bookstore-backend-d3x5.onrender.com/api/books/paginate/?page=${pageParam}&limit=10`;
