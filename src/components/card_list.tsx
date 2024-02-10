@@ -5,11 +5,8 @@ import { Book } from "../types/index";
 import Card from "./card";
 import styled from "styled-components";
 import LoadingSpinner from "./loading";
+import { useStore } from "../store";
 
-// 3.75.158.163
-// 3.125.183.140
-// 35.157.117.28
-// const [];
 const getBooks = async ({
   pageParam = 0,
   queryKey,
@@ -19,7 +16,11 @@ const getBooks = async ({
 }) => {
   let url = `https://bookstore-backend-d3x5.onrender.com/api/books/paginate/?page=${pageParam}&limit=10`;
 
-  if (queryKey[1].length) url += `&search=${queryKey[1]}`;
+  if (queryKey[0].length) url += `&search=${queryKey[0]}`;
+  if (queryKey[1]) url += `&minPrice=${queryKey[1]}`;
+  if (queryKey[2]) url += `&maxPrice=${queryKey[2]}`;
+
+  console.log("url: ", url);
 
   const res = await fetch(url);
   const data = await res.json();
@@ -31,12 +32,19 @@ const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 16px;
+  margin: 21px;
+  padding-right: 27px;
+  padding-left: 27px;
 `;
 
-function CardList({ search }: { search: string }) {
+function CardList() {
+  const searchKey = useStore((state: any) => state.search);
+  const minPrice = useStore((state: any) => state.minPrice);
+  const maxPrice = useStore((state: any) => state.maxPrice);
+
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     initialPageParam: 1,
-    queryKey: ["books", search],
+    queryKey: [searchKey, minPrice, maxPrice],
     queryFn: getBooks,
     getNextPageParam: (lastPage) => {
       console.log(
@@ -46,12 +54,9 @@ function CardList({ search }: { search: string }) {
       if (lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount)
         return false;
 
-      console.log("this page: ", lastPage.prevPage + 1);
       return lastPage.prevPage + 1;
     },
   });
-
-  console.log("has more: ", hasNextPage);
 
   const books = data?.pages.reduce((acc, page) => {
     if (page?.documents?.length > 1) return [...acc, ...page.documents];
@@ -66,7 +71,7 @@ function CardList({ search }: { search: string }) {
       next={() => fetchNextPage()}
       hasMore={hasNextPage}
       loader={LoadingSpinner()}
-      endMessage={<p>Nothing more to show</p>}
+      endMessage={<p>...</p>}
     >
       <CardGrid>
         {books &&
