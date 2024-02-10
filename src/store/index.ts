@@ -13,10 +13,11 @@ export const useStore = create((set) => ({
     set((state: Search) => ({ ...state, minPrice })),
   setMaxPrice: (maxPrice: number) =>
     set((state: Search) => ({ ...state, maxPrice })),
-}));
 
-export const useAuthStore = create((set) => ({
-  token: null,
-  setToken: (token: string) => set((state: Search) => token),
-  removeToken: () => set((state: Search) => null),
+  // auth states
+  token: { jwt: null },
+  setToken: (token: string) => {
+    set(() => ({ token: { jwt: token } }));
+  },
+  removeToken: () => set(() => ({ token: { jwt: null } })),
 }));

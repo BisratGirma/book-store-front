@@ -4,6 +4,24 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginPage from "./components/login";
+import SignupPage from "./components/signup";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
+  },
+]);
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(
@@ -12,7 +30,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <QueryClientProvider client={queryClient}>
     <React.StrictMode>
-      <App />
+      <RouterProvider router={router} />
     </React.StrictMode>
   </QueryClientProvider>
 );

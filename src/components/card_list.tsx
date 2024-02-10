@@ -47,10 +47,6 @@ function CardList() {
     queryKey: [searchKey, minPrice, maxPrice],
     queryFn: getBooks,
     getNextPageParam: (lastPage) => {
-      console.log(
-        "this true: ",
-        lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount
-      );
       if (lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount)
         return false;
 

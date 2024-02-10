@@ -2,7 +2,8 @@ import "./App.css";
 import CardList from "./components/card_list";
 import HeroSection from "./components/hero";
 import styled from "styled-components";
-import { useAuthStore } from "./store";
+import { useStore } from "./store";
+import { useNavigate, useRoutes } from "react-router";
 
 const TopButtons = styled.div`
   position: absolute;
@@ -20,12 +21,20 @@ const Button = styled.button`
 `;
 
 function App() {
-  const authenticated = useAuthStore((state: any) => state.token);
+  const navigate = useNavigate();
+  const authenticated = useStore((state: any) => state.token.jwt);
+  const removeToken = useStore((state: any) => state.removeToken);
+
   return (
     <div className="App">
-      {!authenticated && (
+      {authenticated ? (
+        <TopButtons onClick={() => removeToken()}>
+          <Button>Logout</Button>
+        </TopButtons>
+      ) : (
         <TopButtons>
-          <Button>Login</Button> |<Button>Signup</Button>
+          <Button onClick={() => navigate("/login")}>Login</Button> |{" "}
+          <Button onClick={() => navigate("/signup")}>Signup</Button>
         </TopButtons>
       )}
       <HeroSection />

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { useStore } from "../store/index";
 
-const LoginPage = () => {
+const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,7 +47,7 @@ const LoginPage = () => {
       {errorMessage.length && ErrorMessage({ message: errorMessage })}
       <Container>
         <LoginForm>
-          <h1>Login</h1>
+          <h1>Register</h1>
           <Input
             type="email"
             placeholder="Email"
@@ -60,7 +60,7 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button onClick={handleLogin}>Sign In</Button>
+          <Button onClick={handleLogin}>Sign Up</Button>
         </LoginForm>
       </Container>
     </>
@@ -113,4 +113,4 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default LoginPage;
+export default SignupPage;

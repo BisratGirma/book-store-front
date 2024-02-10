@@ -1,6 +1,3 @@
-// HeroSection.js
-
-import React, { useState } from "react";
 import styled from "styled-components";
 import { useStore } from "../store";
 
@@ -41,22 +38,6 @@ const SearchInput = styled.input`
   outline: none;
 `;
 
-const SearchButton = styled.button`
-  background-color: #007bff; /* Set your desired button color */
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 20px;
-  margin: 30px 0;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
 const PriceInput = styled.div`
   display: flex;
   align-items: center;
@@ -90,8 +71,6 @@ const HeroSection = () => {
 
     setSearch(e.currentTarget.elements[0].value);
   };
-
-  console.log("searchValues: ", searchValues);
 
   return (
     <HeroContainer>
