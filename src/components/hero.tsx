@@ -99,7 +99,7 @@ const HeroSection = () => {
           <SearchInput
             type="text"
             placeholder="Search for books..."
-            value={searchValues.search}
+            value={searchValues.search.search}
             onChange={(e: any) => setSearch(e.target.value)}
           />
         </div>
@@ -109,14 +109,14 @@ const HeroSection = () => {
           <PriceField
             type="number"
             min="0"
-            value={searchValues.minPrice}
+            value={searchValues.search.minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
           />
           <Label>-</Label>
           <PriceField
             type="number"
             min="0"
-            value={searchValues.maxPrice}
+            value={searchValues.search.maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
           />
         </PriceInput>
