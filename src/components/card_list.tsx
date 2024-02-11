@@ -6,6 +6,7 @@ import Card from "./card";
 import styled from "styled-components";
 import LoadingSpinner from "./loading";
 import { useStore } from "../store";
+import { useState } from "react";
 
 const getBooks = async ({
   pageParam = 0,
@@ -14,6 +15,7 @@ const getBooks = async ({
   pageParam: number | false;
   queryKey: string[];
 }) => {
+  if (pageParam === false) return { documents: [], prevPage: pageParam };
   let url = `https://bookstore-backend-d3x5.onrender.com/api/books/paginate?page=${pageParam}&limit=10`;
 
   if (queryKey[0].length) url += `&search=${queryKey[0]}`;
@@ -22,6 +24,7 @@ const getBooks = async ({
 
   const res = await fetch(url);
   const data = await res.json();
+  console.log("data: ", data);
 
   return { ...data, prevPage: pageParam };
 };
@@ -40,8 +43,8 @@ function CardList() {
   const minPrice = useStore((state: any) => state.minPrice);
   const maxPrice = useStore((state: any) => state.maxPrice);
 
-  const { data, fetchNextPage, hasNextPage, isPending, error } =
-    useInfiniteQuery({
+  let { data, fetchNextPage, hasNextPage, isPending, error } = useInfiniteQuery(
+    {
       initialPageParam: 1,
       queryKey: [searchKey, minPrice, maxPrice],
       queryFn: getBooks,
@@ -51,19 +54,19 @@ function CardList() {
 
         return lastPage.prevPage + 1;
       },
-    });
+    }
+  );
 
   if (isPending) return <LoadingSpinner />;
   if (error) return <p>error: Try refreshing the page</p>;
 
   const books = data?.pages.reduce((acc, page) => {
-    console.log("pages: ", page);
-    console.log("accu: ", acc);
     if (page?.documents?.length > 1) return [...acc, ...page.documents];
     else if (Array.isArray(page?.documents) && page?.documents?.length === 1)
       return page.documents;
     else return [];
   }, []);
+  console.log("has next: ", hasNextPage);
 
   return (
     <InfiniteScroll
@@ -73,12 +76,13 @@ function CardList() {
       loader={LoadingSpinner()}
       endMessage={<p>---//---</p>}
     >
-      <CardGrid>
-        {books &&
-          books.map((book: Book) => (
+      {books && (
+        <CardGrid>
+          {books.map((book: Book) => (
             <div key={book.id}>{<Card {...book} />}</div>
           ))}
-      </CardGrid>
+        </CardGrid>
+      )}
     </InfiniteScroll>
   );
 }
