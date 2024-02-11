@@ -27,11 +27,18 @@ const LoginPage = () => {
     };
 
     try {
-      const response = await fetch("https://xxx.xxx/", requestOptions);
+      const response = await fetch(
+        "https://bookstore-backend-d3x5.onrender.com/api/user/login",
+        requestOptions
+      );
+
+      console.log("response: ", response.status);
 
       const res = await response.json();
 
-      if (res.status === 200) {
+      console.log("res: ", res);
+
+      if (response.status === 200) {
         setToken(res.token);
         navigate("/");
       } else {

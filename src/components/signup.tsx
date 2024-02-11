@@ -27,11 +27,15 @@ const SignupPage = () => {
     };
 
     try {
-      const response = await fetch("https://xxx.xxx/", requestOptions);
+      const response = await fetch(
+        "https://bookstore-backend-d3x5.onrender.com/api/user/",
+        requestOptions
+      );
 
       const res = await response.json();
 
-      if (res.status === 200) {
+      if (response.status === 200) {
+        console.log("token", res.token);
         setToken(res.token);
         navigate("/");
       } else {
