@@ -40,19 +40,25 @@ function CardList() {
   const minPrice = useStore((state: any) => state.minPrice);
   const maxPrice = useStore((state: any) => state.maxPrice);
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    initialPageParam: 1,
-    queryKey: [searchKey, minPrice, maxPrice],
-    queryFn: getBooks,
-    getNextPageParam: (lastPage) => {
-      if (lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount)
-        return false;
+  const { data, fetchNextPage, hasNextPage, isPending, error } =
+    useInfiniteQuery({
+      initialPageParam: 1,
+      queryKey: [searchKey, minPrice, maxPrice],
+      queryFn: getBooks,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.prevPage * lastPage.itemsPerPage > lastPage.totalCount)
+          return false;
 
-      return lastPage.prevPage + 1;
-    },
-  });
+        return lastPage.prevPage + 1;
+      },
+    });
+
+  if (isPending) return <LoadingSpinner />;
+  if (error) return <p>error: Try refreshing the page</p>;
 
   const books = data?.pages.reduce((acc, page) => {
+    console.log("pages: ", page);
+    console.log("accu: ", acc);
     if (page?.documents?.length > 1) return [...acc, ...page.documents];
     else if (Array.isArray(page?.documents) && page?.documents?.length === 1)
       return page.documents;
@@ -61,11 +67,11 @@ function CardList() {
 
   return (
     <InfiniteScroll
-      dataLength={books?.Length ?? 0}
+      dataLength={books.length ?? 0}
       next={() => fetchNextPage()}
       hasMore={hasNextPage}
       loader={LoadingSpinner()}
-      endMessage={<p>...</p>}
+      endMessage={<p>---//---</p>}
     >
       <CardGrid>
         {books &&

@@ -8,7 +8,7 @@ const Header = styled.div`
   justify-content: space-between;
   height: 30px;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.5); /* half transparent white */
+  background-color: rgba(255, 255, 255, 0.7); /* half transparent white */
 `;
 
 const Logo = styled.div`

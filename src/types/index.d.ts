@@ -4,5 +4,5 @@ export interface Book {
   writer: string;
   coverImage: string;
   point: number;
-  tag: string[];
+  tag: string;
 }

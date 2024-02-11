@@ -37,8 +37,6 @@ const LoginPage = () => {
 
       const res = await response.json();
 
-      console.log("res: ", res.user);
-
       if (response.status === 200) {
         setToken(res.user?.token);
         setPoints(res.user?.points);

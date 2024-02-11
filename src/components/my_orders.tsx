@@ -8,6 +8,7 @@ const OrderBookList = styled.ul`
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
@@ -63,8 +64,10 @@ function OrderBookComponent() {
 
       if (response.status === 200)
         setOrderBooks(orderBooks.filter((_book: any) => _book.id !== bookID));
-      else navigate("/");
-    } catch (error) {}
+      else setErrorMessage(data.message ?? "please try again later");
+    } catch (error) {
+      setErrorMessage("server error");
+    }
   };
 
   // Fetch the order books from an API when the component mounts
@@ -87,9 +90,9 @@ function OrderBookComponent() {
         const data = await response.json();
 
         if (response.status === 200) setOrderBooks(data.order);
-        else setErrorMessage(data.message ?? "please try again later");
+        else navigate("/");
       } catch (error) {
-        setErrorMessage("server error");
+        navigate("/");
       }
     }
     fetchOrderBooks();
