@@ -14,13 +14,11 @@ const getBooks = async ({
   pageParam: number | false;
   queryKey: string[];
 }) => {
-  let url = `https://bookstore-backend-d3x5.onrender.com/api/books/paginate/?page=${pageParam}&limit=10`;
+  let url = `https://bookstore-backend-d3x5.onrender.com/api/books/paginate?page=${pageParam}&limit=10`;
 
   if (queryKey[0].length) url += `&search=${queryKey[0]}`;
   if (queryKey[1]) url += `&minPrice=${queryKey[1]}`;
   if (queryKey[2]) url += `&maxPrice=${queryKey[2]}`;
-
-  console.log("url: ", url);
 
   const res = await fetch(url);
   const data = await res.json();

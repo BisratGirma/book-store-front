@@ -8,6 +8,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const setToken = useStore((state: any) => state.setToken);
+  const setPoints = useStore((state: any) => state.setPoints);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -36,10 +37,11 @@ const LoginPage = () => {
 
       const res = await response.json();
 
-      console.log("res: ", res);
+      console.log("res: ", res.user);
 
       if (response.status === 200) {
-        setToken(res.token);
+        setToken(res.user?.token);
+        setPoints(res.user?.points);
         navigate("/");
       } else {
         setErrorMessage(res.message);
@@ -51,7 +53,7 @@ const LoginPage = () => {
 
   return (
     <>
-      {errorMessage.length && ErrorMessage({ message: errorMessage })}
+      {errorMessage.length > 0 && ErrorMessage({ message: errorMessage })}
       <Container>
         <LoginForm>
           <h1>Login</h1>

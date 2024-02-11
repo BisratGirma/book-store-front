@@ -89,14 +89,12 @@ const HeroSection = () => {
           <PriceField
             type="number"
             min="0"
-            value={searchValues.minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
           />
           <Label>-</Label>
           <PriceField
             type="number"
             min="0"
-            value={searchValues.maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
           />
         </PriceInput>
